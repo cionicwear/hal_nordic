@@ -267,6 +267,13 @@ void nrfx_clock_start(nrf_clock_domain_t domain)
     switch (domain)
     {
         case NRF_CLOCK_DOMAIN_LFCLK:
+            {
+                // Stop the LFCLK if already running to enable clk re-configuration
+                nrf_clock_lfclk_t lfclksrc;
+                if(nrf_clock_is_running(NRF_CLOCK, NRF_CLOCK_DOMAIN_LFCLK, &lfclksrc)){
+                    nrfx_clock_stop(NRF_CLOCK_DOMAIN_LFCLK);
+                }
+            }
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED)
             {
                 nrf_clock_lfclk_t lfclksrc;
